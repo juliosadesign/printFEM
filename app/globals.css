@@ -1,26 +1,157 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  margin: 0;
+  background: #09090b;
+  color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: #facc15;
+  color: #000000;
+}
+
+/* Fundo técnico com textura sutil */
+.industrial-bg {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(250, 204, 21, 0.11), transparent 28%),
+    radial-gradient(circle at 80% 0%, rgba(113, 113, 122, 0.2), transparent 25%),
+    radial-gradient(circle at 50% 100%, rgba(250, 204, 21, 0.07), transparent 30%),
+    linear-gradient(180deg, #050505 0%, #09090b 45%, #111113 100%);
+}
+
+/* Grade técnica discreta */
+.technical-grid {
+  background-image:
+    linear-gradient(rgba(250, 204, 21, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250, 204, 21, 0.045) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+/* Card técnico padrão */
+.tech-card {
+  border: 1px solid rgba(250, 204, 21, 0.16);
+  background:
+    linear-gradient(145deg, rgba(39, 39, 42, 0.92), rgba(9, 9, 11, 0.96)),
+    radial-gradient(circle at top right, rgba(250, 204, 21, 0.08), transparent 35%);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Brilho sutil para botões amarelos */
+.yellow-glow {
+  box-shadow:
+    0 0 0 1px rgba(250, 204, 21, 0.25),
+    0 18px 40px rgba(250, 204, 21, 0.18);
+}
+
+/* Linhas técnicas decorativas */
+.tech-line {
+  position: relative;
+}
+
+.tech-line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -14px;
+  width: 96px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #facc15, transparent);
+}
+
+/* Animação da seta de força */
+.force-motion {
+  animation: forceMotion 1.6s ease-in-out infinite;
+}
+
+@keyframes forceMotion {
+  0%,
+  100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.35));
+  }
+
+  50% {
+    transform: translateY(10px);
+    filter: drop-shadow(0 0 16px rgba(250, 204, 21, 0.65));
+  }
+}
+
+/* Flutuação sutil para objetos 3D */
+.float-3d {
+  animation: float3d 5s ease-in-out infinite;
+}
+
+@keyframes float3d {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(-8deg);
+  }
+}
+
+/* Pulso técnico para ponto crítico */
+.critical-pulse {
+  animation: criticalPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes criticalPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
+  }
+
+  50% {
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
+  }
+}
+
+/* Transição suave para blocos visuais */
+.smooth-panel {
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.smooth-panel:hover {
+  transform: translateY(-4px);
+  border-color: rgba(250, 204, 21, 0.45);
+}
+
+/* Aparência de superfície metálica */
+.metal-surface {
+  background:
+    linear-gradient(145deg, #d4d4d8 0%, #71717a 42%, #18181b 100%);
+}
+
+/* Barra amarela decorativa */
+.yellow-accent {
+  background: linear-gradient(90deg, #facc15, rgba(250, 204, 21, 0));
+}
+
+/* Remover aparência azul padrão de links em alguns navegadores */
+a {
+  color: inherit;
+  text-decoration: none;
 }
