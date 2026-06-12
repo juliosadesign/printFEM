@@ -125,9 +125,12 @@ export function MeshVisualizer({ data }: MeshVisualizerProps) {
                 {viewMode === "result" && (
                   <g clipPath="url(#partClip)" filter="url(#softShadow)">
                     <ResultCells
-                      columns={meshConfig.columns}
-                      rows={meshConfig.rows}
-                    />
+  columns={meshConfig.columns}
+  rows={meshConfig.rows}
+  partType={partType}
+  fixedPoint={fixedPoint}
+  forceDirection={forceDirection}
+/>
                   </g>
                 )}
 
@@ -439,9 +442,15 @@ function MeshNodes({
 function ResultCells({
   columns,
   rows,
+  partType,
+  fixedPoint,
+  forceDirection,
 }: {
   columns: number;
   rows: number;
+  partType: string;
+  fixedPoint: string;
+  forceDirection: string;
 }) {
   const xStart = 90;
   const xEnd = 610;
@@ -451,31 +460,57 @@ function ResultCells({
   const cellWidth = (xEnd - xStart) / columns;
   const cellHeight = (yEnd - yStart) / rows;
 
+  const hotspot = getCriticalRegionPosition(
+    partType,
+    fixedPoint,
+    forceDirection
+  );
+
   const cells = [];
 
   for (let row = 0; row < rows; row += 1) {
     for (let column = 0; column < columns; column += 1) {
-      const intensity = column / Math.max(columns - 1, 1);
+      const x = xStart + column * cellWidth;
+      const y = yStart + row * cellHeight;
 
-      let fill = "#71717a";
+      const centerX = x + cellWidth / 2;
+      const centerY = y + cellHeight / 2;
 
-      if (intensity > 0.75) {
+      const normalizedDistanceX = (centerX - hotspot.x) / (xEnd - xStart);
+      const normalizedDistanceY = (centerY - hotspot.y) / (yEnd - yStart);
+
+      const distance = Math.sqrt(
+        normalizedDistanceX * normalizedDistanceX +
+          normalizedDistanceY * normalizedDistanceY
+      );
+
+      const intensity = Math.max(0, 1 - distance * 3.2);
+
+      let fill = "#a1a1aa";
+      let opacity = "0.55";
+
+      if (intensity >= 0.72) {
         fill = "#ef4444";
-      } else if (intensity > 0.55) {
+        opacity = "0.9";
+      } else if (intensity >= 0.48) {
         fill = "#fb923c";
-      } else if (intensity > 0.32) {
+        opacity = "0.85";
+      } else if (intensity >= 0.25) {
         fill = "#facc15";
+        opacity = "0.82";
       }
 
       cells.push(
         <rect
           key={`cell-${row}-${column}`}
-          x={xStart + column * cellWidth}
-          y={yStart + row * cellHeight}
+          x={x}
+          y={y}
           width={cellWidth}
           height={cellHeight}
           fill={fill}
-          opacity="0.78"
+          opacity={opacity}
+          stroke="#18181b"
+          strokeWidth="1"
         />
       );
     }
