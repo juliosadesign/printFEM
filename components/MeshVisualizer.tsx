@@ -158,7 +158,13 @@ export function MeshVisualizer({ data }: MeshVisualizerProps) {
 
                 <PartOutline partType={partType} />
 
-                {viewMode === "result" && <CriticalRegion />}
+                {viewMode === "result" && (
+  <CriticalRegion
+    partType={partType}
+    fixedPoint={fixedPoint}
+    forceDirection={forceDirection}
+  />
+)}
               </svg>
             </div>
           </div>
@@ -478,28 +484,54 @@ function ResultCells({
   return <g>{cells}</g>;
 }
 
-function CriticalRegion() {
+function CriticalRegion({
+  partType,
+  fixedPoint,
+  forceDirection,
+}: {
+  partType: string;
+  fixedPoint: string;
+  forceDirection: string;
+}) {
+  const position = getCriticalRegionPosition(
+    partType,
+    fixedPoint,
+    forceDirection
+  );
+
   return (
     <g>
       <circle
-        cx="535"
-        cy="205"
+        cx={position.x}
+        cy={position.y}
         r="28"
         fill="#ef4444"
         opacity="0.85"
       />
+
       <circle
-        cx="535"
-        cy="205"
-        r="38"
+        cx={position.x}
+        cy={position.y}
+        r="40"
         fill="none"
         stroke="#ef4444"
         strokeWidth="4"
         strokeDasharray="8 8"
       />
+
+      <circle
+        cx={position.x}
+        cy={position.y}
+        r="52"
+        fill="none"
+        stroke="#ef4444"
+        strokeWidth="2"
+        opacity="0.45"
+      />
+
       <text
-        x="480"
-        y="265"
+        x={position.labelX}
+        y={position.labelY}
         fill="#fecaca"
         fontSize="18"
         fontWeight="700"
@@ -508,6 +540,136 @@ function CriticalRegion() {
       </text>
     </g>
   );
+}
+
+function getCriticalRegionPosition(
+  partType: string,
+  fixedPoint: string,
+  forceDirection: string
+) {
+  if (partType === "Suporte em L") {
+    if (fixedPoint === "Base") {
+      return {
+        x: 235,
+        y: 250,
+        labelX: 185,
+        labelY: 310,
+      };
+    }
+
+    if (fixedPoint === "Direita") {
+      return {
+        x: 500,
+        y: 285,
+        labelX: 430,
+        labelY: 345,
+      };
+    }
+
+    return {
+      x: 175,
+      y: 250,
+      labelX: 125,
+      labelY: 310,
+    };
+  }
+
+  if (partType === "Barra retangular") {
+    if (fixedPoint === "Direita") {
+      return {
+        x: 510,
+        y: 215,
+        labelX: 440,
+        labelY: 285,
+      };
+    }
+
+    if (fixedPoint === "Base") {
+      return {
+        x: 350,
+        y: 255,
+        labelX: 285,
+        labelY: 320,
+      };
+    }
+
+    return {
+      x: 185,
+      y: 215,
+      labelX: 125,
+      labelY: 285,
+    };
+  }
+
+  if (partType === "Placa com furo") {
+    return {
+      x: 350,
+      y: 225,
+      labelX: 285,
+      labelY: 310,
+    };
+  }
+
+  if (partType === "Suporte de sensor") {
+    if (fixedPoint === "Base") {
+      return {
+        x: 350,
+        y: 260,
+        labelX: 285,
+        labelY: 325,
+      };
+    }
+
+    if (forceDirection === "Para cima") {
+      return {
+        x: 350,
+        y: 140,
+        labelX: 285,
+        labelY: 105,
+      };
+    }
+
+    return {
+      x: 350,
+      y: 245,
+      labelX: 285,
+      labelY: 315,
+    };
+  }
+
+  if (partType === "Braço de drone") {
+    if (fixedPoint === "Direita") {
+      return {
+        x: 500,
+        y: 180,
+        labelX: 425,
+        labelY: 260,
+      };
+    }
+
+    if (fixedPoint === "Base") {
+      return {
+        x: 350,
+        y: 180,
+        labelX: 285,
+        labelY: 260,
+      };
+    }
+
+    return {
+      x: 200,
+      y: 180,
+      labelX: 130,
+      labelY: 260,
+    };
+  }
+
+  return {
+    x: 350,
+    y: 225,
+    labelX: 285,
+    labelY: 295,
+  };
 }
 
 function ViewButton({
